@@ -1,0 +1,31 @@
+.BtnContainer {
+    display: flex;
+    gap: 1rem;
+
+    select {
+        border-radius: 5px;
+        border: 1px solid #ddd;
+    }
+    
+    .Btn {
+        padding: 0.6rem;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+
+    .Secondary {
+        background: #514F63;
+        color: #fff;
+    }
+
+    .Primary {
+        background: #70B6E1;
+        color: #fff;
+    }
+
+    .Reset {
+        background-color: #7EC2C3;
+        color: #fff;
+    }
+}
