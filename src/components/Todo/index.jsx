@@ -68,10 +68,6 @@ const Todo = () => {
     ttl: "Publication Date",
   }];
 
-  useEffect(() => {
-
-  }, [filterData])
-
   return (
     <div className={Styles.TodoContainer}>
       <h1>Book Store Shop</h1>
