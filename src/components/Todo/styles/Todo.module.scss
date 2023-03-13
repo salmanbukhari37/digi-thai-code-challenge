@@ -64,3 +64,15 @@
     }
   }
 }
+
+.Error {
+  background: #f8d7da;
+  display: flex;
+  align-items: flex-start;
+  padding: 0.6rem 1rem;
+  border-radius: 5px;
+  margin: 0.6rem 0;
+  font-size: 14px;
+  color: #721c24;
+  border-color: #f5c6cb;
+}

@@ -8,7 +8,7 @@ const GlobalTable = ({columns, data}) => (
       </tr>
     </thead>
     <tbody>
-      {data?.map(({ author, title, published, isbn }, index) => (
+      {data && data?.map(({ author, title, published, isbn }, index) => (
         <tr key={isbn + index}>
           <td>{title}</td>
           <td>{author}</td>
