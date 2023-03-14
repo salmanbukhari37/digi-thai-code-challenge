@@ -4,44 +4,63 @@ import Styles from "./styles/Todo.module.scss";
 import { debounce, cloneDeep } from "lodash";
 import Filters from "common/components/Filters";
 import GlobalTable from "common/components/GlobalTable";
-import { sortData } from "../../helpers/utils";
-import { getBooksService } from "../../services/services";
+import { sortData } from "helpers/utils";
+import { getBooksService } from "services/services";
 
 const Todo = () => {
   const [books, setBooks] = useState([]);
+  const [search, setSearch] = useState();
   const [filterData, setFilterData] = useState([]);
   const [isLoading, setIsLoading] = useState();
   const [error, setError] = useState();
   const [limit, setLimit] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
 
   // Reset Handler
   const resetHandler = () => {
-    setFilterData(books?.slice(0, limit))
+    setFilterData(books);
+    setLimit(10);
+    setSearch("");
   }
 
   // Sort Handler - Sorting data by title || publish date
   const sortHandler = ({type}) => {
-    const clonedBooks = cloneDeep(books);
-    const sortedData = sortData(clonedBooks, type);
-    setFilterData(sortedData.slice(0, limit));
+    setCurrentPage(1);
+    if (filterData?.length > 0) {
+      const clonedData = cloneDeep(filterData);
+      const sortedData = sortData(clonedData, type);
+      setFilterData(sortedData);
+    } else {
+      const actualData = cloneDeep(books);
+      setFilterData(actualData);
+    }
+   
   };
 
   // Limit Handler - Show items by limit e.g. 10, 15, 25, 50
   const limitHandler = (event) => {
     const value = event.target.value;
-    setLimit(value);
-    const clonedBooks = cloneDeep(books);
-    const result = clonedBooks.slice(0, value);
-    setFilterData(result);
+    setCurrentPage(1);
+    if (filterData?.length > 0) {
+      const filteredData = cloneDeep(filterData);
+      setLimit(Number( value ));
+      setFilterData(filteredData);
+    } else {
+      const clonedBooks = cloneDeep(books);
+      setLimit(Number( value ));
+      setFilterData(clonedBooks);
+    }
+   
   }
 
   // Search Handler - Searching books
   const searchHandler = debounce((debounceVal) => {
     let val = debounceVal.toLowerCase();
+    setCurrentPage(1);
     let extractedData = books.filter(({ title }) =>
       title?.toLowerCase()?.includes(val)
     );
-    setFilterData(extractedData.slice(0, limit));
+    setFilterData(extractedData);
   }, 500);
 
   // Api call - Get the data for table listing
@@ -55,7 +74,7 @@ const Todo = () => {
         // set books
         setBooks(response?.data);
         // Default it will show 10 items
-        setFilterData(response?.data?.slice(0, limit))
+        setFilterData(response?.data)
       } else {
         setIsLoading(false);
         setError(response?.status)
@@ -89,9 +108,19 @@ const Todo = () => {
         sortHandler={sortHandler} 
         resetHandler={resetHandler}
         limitHandler={limitHandler}
+        setSearch={setSearch}
+        search={search}
+        limit={limit}
       />
       {error && <span className={Styles.Error}>{error}</span>}
-      <GlobalTable columns={columns} data={filterData} />
+      <div className={Styles.TableContainer}>
+        <GlobalTable 
+          columns={columns} 
+          data={filterData} 
+          limit={limit} 
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage} />
+      </div>
     </div>
   );
 };
