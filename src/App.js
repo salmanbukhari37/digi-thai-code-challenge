@@ -1,11 +1,18 @@
 import Todo from "components/Todo";
+import {Helmet} from "react-helmet";
 import Styles from "App.module.scss";
 
 function App() {
   return (
-    <div className={Styles.MainContainer}>
-      <Todo />
-    </div>
+    <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Book Store App</title>
+      </Helmet>
+      <div className={Styles.MainContainer}>
+        <Todo />
+      </div>
+    </>
   );
 }
 
