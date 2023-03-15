@@ -57,8 +57,8 @@ const Todo = () => {
   const searchHandler = debounce((debounceVal) => {
     let val = debounceVal.toLowerCase();
     setCurrentPage(1);
-    let extractedData = books.filter(({ title }) =>
-      title?.toLowerCase()?.includes(val)
+    let extractedData = books.filter(({ author }) =>
+      author?.toLowerCase()?.includes(val)
     );
     setFilterData(extractedData);
   }, 500);
